@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const serveStatic = require('serve-static')
+const serveStatic = require('serve-static');
+const history = require('connect-history-api-fallback');
 
 const incomingOriginWhitelist = [
   //for machines that use 'origin'
@@ -40,11 +41,12 @@ module.exports = (app, express) => {
   app.use(bodyParser.urlencoded({
     extended: false
   }))
-  app.use("/", serveStatic(__dirname + "/dist"));
-  app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/dist/index.html')
-  })
 
+  app.use(history({
+    verbose: true
+  }))
+  app.use( serveStatic(__dirname + "/../dist"));
+  
   app.use('/api', api)
 
   app.use(logger('short'));
