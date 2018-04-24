@@ -3,7 +3,7 @@ const secrets = require('./secrets');
 const dbConnection = mongoose.connection;
 
 mongoose.Promise = global.Promise;
-
+console.log(secrets,"secretess")
 mongoose.connect(secrets.DATABASE)
 
 module.exports = {
