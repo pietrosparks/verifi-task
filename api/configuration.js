@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const serveStatic = require('serve-static')
 
 const incomingOriginWhitelist = [
   //for machines that use 'origin'
