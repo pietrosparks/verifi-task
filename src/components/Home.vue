@@ -83,7 +83,7 @@
       },
       createProject() {
         this.createProjectLoading = !this.createProjectLoading
-        this.$axios.post('/project', this.newProject).then(resp => {
+        this.$axios.post('/api/project', this.newProject).then(resp => {
 
           this.createProjectLoading = !this.createProjectLoading
           this.newProject = {}
@@ -106,7 +106,7 @@
       },
       getProjects() {
 
-        this.$axios.get('/project').then(resp => {
+        this.$axios.get('/api/project').then(resp => {
           console.log(resp);
           this.existingProjects = resp.data.data
         })
