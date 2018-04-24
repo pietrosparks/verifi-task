@@ -46,7 +46,7 @@
                   </select>
                 </div>
           
-                <a class="button" @click="runFilter()">Filter</a>
+                <a class="button" @click="runFilter()" :class="{'is-loading':taskLoading}">Filter</a>
                 <a class="button" @click="getAllTasks()">Clear</a>
         </div>
         <hr>
@@ -123,6 +123,7 @@
         searchItem: '',
         dropdownButton: false,
         overdue: false,
+        taskLoading:false,
         selectPriority: '',
         orderOptions: [{
             name: 'Descending Name',
@@ -217,6 +218,7 @@
             $gt: this.selectedDate
           }
         }
+        this.taskLoading=true
         this.$axios.get('/task', {
           params: {
             filter: this.filterAndSortObj
@@ -226,7 +228,7 @@
           this.dropdownButton = false;
           this.selectedDate = '';
           this.filterAndSortObj = {filter: {}}
-
+          this.taskLoading=false
         }).catch((e)=>{
             this.$modalResponse({
             type: e.response.data.status,
@@ -236,6 +238,7 @@
           })
           this.selectedDate = '';
           this.filterAndSortObj = {filter: {}}
+          this.taskLoading=false
         })
       }
 

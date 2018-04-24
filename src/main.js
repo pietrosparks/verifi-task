@@ -15,7 +15,6 @@ if (process.env.NODE_ENV == 'production') {
   axios.defaults.baseURL = process.env.BASEURL_PROD;
 } else axios.defaults.baseURL = process.env.API_BASE_URL;
 
-console.log(axios.defaults.baseURL,"hgagbasing")
 
 Vue.use(Buefy);
 Vue.use(require('vue-moment'));
