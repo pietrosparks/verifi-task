@@ -3,6 +3,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const serveStatic = require('serve-static');
 const history = require('connect-history-api-fallback');
+const path = require('path');
 
 const incomingOriginWhitelist = [
   //for machines that use 'origin'
@@ -50,7 +51,7 @@ module.exports = (app, express) => {
   app.use(serveStatic(__dirname + "/../dist"));
   app.use(express.static(path.join(__dirname, 'public'))) 
   app.use('/api', api);
-  
+
   app.use(logger('short'));
 
   app.use((req, res, next) => {
