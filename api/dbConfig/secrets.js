@@ -1,10 +1,10 @@
 require('dotenv').load();
 
 let MONGO_DB ; 
-console.log(process.env.MONGOLAB_URI,process.env.BASEURL_PROD,"environmane")
+console.log(process.env.MONGODB_URI,process.env.BASEURL_PROD,"environmane")
 
 if (process.env.NODE_ENV == 'production'){
-    MONGO_DB = process.env.MONGOLAB_URI;
+    MONGO_DB = process.env.MONGODB_URI;
     BASEURL = process.env.BASEURL_PROD
 }
 else{
