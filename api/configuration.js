@@ -45,11 +45,12 @@ module.exports = (app, express) => {
   app.use(history({
     verbose: true
   }))
-  app.use('/api', api);
-  app.use('/',serveStatic(__dirname + "/../dist"));
   
- 
-
+  
+  app.use(serveStatic(__dirname + "/../dist"));
+  app.use(express.static(path.join(__dirname, 'public'))) 
+  app.use('/api', api);
+  
   app.use(logger('short'));
 
   app.use((req, res, next) => {
