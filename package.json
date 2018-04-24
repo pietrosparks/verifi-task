@@ -24,6 +24,7 @@
     "mongoose": "^5.0.15",
     "mongoose-unique-validator": "^2.0.0",
     "morgan": "^1.9.0",
+    "serve-static": "^1.13.2",
     "sweetalert2": "^7.19.1",
     "vue": "^2.5.2",
     "vue-moment": "^3.2.0",
