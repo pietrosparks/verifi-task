@@ -54,7 +54,6 @@ module.exports = (app, express) => {
     //Only prviding errors in development 
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
-    console.log(err);
     res.render('error')
   })
 }

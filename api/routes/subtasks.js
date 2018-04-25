@@ -9,7 +9,6 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
 
     req.getValidationResult()
       .then((result) => {
-          console.log(result.isEmpty())
         if (!result.isEmpty()) {
           return utils.jsonResponse(400, 'error', null.res, 'Data Validation Failed', result.array())
         }

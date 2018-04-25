@@ -9,7 +9,6 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
 
     req.getValidationResult()
       .then((result) => {
-          console.log(result);
         if (!result.isEmpty()) {
           return utils.jsonResponse(400, 'error', null,res, 'Data Validation Failed', result.array())
         }
@@ -54,7 +53,7 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
       if (SortParams.sort && SortParams.sort !==null) query[SortParams.sort.order] = SortParams.sort.direction;
       if (SortParams.filter && SortParams.filter !==null) filter = SortParams.filter;
 
-      Task.find(filter).exec((err, tasks) => {
+      Task.find(filter).sort(query).exec((err, tasks) => {
         if (err) return utils.jsonResponse(500, 'error', null, res, 'There was an error retrieving tasks', err);
         if (!tasks || _.isEmpty(tasks)) return utils.jsonResponse(404, 'error', null, res, 'Tasks not found', err)
         return utils.jsonResponse(200, 'success', tasks, res, 'Tasks Retrieved')
@@ -133,7 +132,6 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
   })
 
   api.delete('/task/:id', (req, res) => {
-    console.log(req.params.id);
     Task.findByIdAndRemove(req.params.id).exec((err) => {
       if (err) return utils.jsonResponse(500, 'error', null, res, 'Error occured while removing task', err);
       utils.jsonResponse(200, 'success', null, res, 'Task Successfully Removed');

@@ -105,7 +105,6 @@
       },
       getProjects() {
         this.$axios.get('/project').then(resp => {
-          console.log(resp);
           this.existingProjects = resp.data.data
         }).catch((e) => {
           return e
