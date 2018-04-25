@@ -4,6 +4,7 @@ const cors = require('cors');
 const serveStatic = require('serve-static');
 const history = require('connect-history-api-fallback');
 const path = require('path');
+const validator = require('express-validator');
 
 const incomingOriginWhitelist = [
   //for machines that use 'origin'
@@ -34,32 +35,20 @@ module.exports = (app, express) => {
 
   const api = require('./routes/api')(express);
 
-  app.use(cors(corsConfig), (req, res, next) => {
-    next();
-  })
-
+  app.use(cors(corsConfig), (req, res, next) => {next();})
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }))
-
-  app.use(history({
-    verbose: true
-  }))
-  
-  
+  app.use(bodyParser.urlencoded({extended: false}))
+  app.use(validator());
+  app.use(history({verbose: true}))
   app.use('/',serveStatic(__dirname + "/../dist"));
   app.use(express.static(path.join(__dirname, 'public'))) 
   app.use('/api', api);
-
   app.use(logger('short'));
-
   app.use((req, res, next) => {
     const err = new Error('Page not found');
     err.status = 404;
     next(err);
   })
-
   app.use((err, req, res) => {
     res.locals.message = err.message
     //Only prviding errors in development 

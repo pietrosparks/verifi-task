@@ -41,7 +41,7 @@
 
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item" @click="addSubTaskModal = true">Add SubTask</a>
+              <a href="#" class="card-footer-item" @click="createSubTaskModal = true">Add SubTask</a>
               <a href="#" class="card-footer-item" @click="editTaskModal=true">Edit Task</a>
               <a href="#" class="card-footer-item" @click="deleteTask()">Delete Task</a>
             </footer>
@@ -101,12 +101,12 @@
 
     <div>
       <!--Add Subtask Modal-->
-      <div class="modal" :class="{'is-active':addSubTaskModal}">
+      <div class="modal" :class="{'is-active':createSubTaskModal}">
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">Add a Subtask</p>
-            <button class="delete" aria-label="close" @click="addSubTaskModal=false"></button>
+            <button class="delete" aria-label="close" @click="createSubTaskModal=false"></button>
           </header>
           <section class="modal-card-body">
             <div class="field">
@@ -137,8 +137,8 @@
           </section>
 
           <footer class="modal-card-foot">
-            <button class="button is-success" :class="{'is-loading':taskLoading}" @click='addSubtask()'>Add SubTask</button>
-            <button class="button" @click="addSubTaskModal=false">Cancel</button>
+            <button class="button is-success" :class="{'is-loading':taskLoading}" @click='createSubTask()'>Add SubTask</button>
+            <button class="button" @click="createSubTaskModal=false">Cancel</button>
           </footer>
 
         </div>
@@ -192,7 +192,7 @@
           </section>
           <footer class="modal-card-foot">
             <button class="button is-success" :class="{'is-loading':taskLoading}" @click='editTask()'>Save Changes</button>
-            <button class="button" @click="addSubTaskModal=false">Cancel</button>
+            <button class="button" @click="createSubTaskModal=false">Cancel</button>
           </footer>
         </div>
 
@@ -268,7 +268,7 @@
         presentTask: '',
         presentSubTask: '',
         subtasks: '',
-        addSubTaskModal: false,
+        createSubTaskModal: false,
         taskLoading: false,
         newSubtask: {
           name: '',
@@ -336,12 +336,12 @@
             
         })
       },
-      addSubtask() {
+      createSubtask() {
         this.taskLoading = true
         this.newSubtask.task_id = this.$route.params.id;
         this.$axios.post('/subtask', this.newSubtask).then(resp => {
           this.taskLoading = false
-          this.addSubTaskModal = false
+          this.createSubTaskModal = false
           this.$modalResponse(resp.data.status, resp.data.message, resp.data.status)
           this.getSubTask();
           this.newSubtask = {
@@ -353,12 +353,12 @@
           }
         }).catch((e)=>{
           this.taskLoading = false
-          this.addSubTaskModal = false
+          this.createSubTaskModal = false
           this.$modalResponse({
             type: e.response.data.status,
             title: 'Oops...',
             text: e.response.data.message,
-            footer: '<p>Subtask Name Has Been Taken</p>',
+            footer: '<p></p>',
           })
           this.newSubtask = {
             name: '',

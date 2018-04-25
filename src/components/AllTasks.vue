@@ -15,47 +15,47 @@
       </div>
     </nav>
     <div class="container">
-        <div class="filterBox">
-                <datepicker placeholder="Select date due" v-model="selectedDate"></datepicker>
-                <div class="dropdown" :class="{'is-active':dropdownButton}">
-                  <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="dropdownButton = !dropdownButton">
-                      <span>Order by</span>
-                      <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                  </div>
-                  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                    <div class="dropdown-content">
-                      <a href="#" class="dropdown-item" v-for="sort in orderOptions" @click="sortBy(sort)">
-                        {{sort.name}}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                Priority:
-                <div class="select">
-                  <select v-model="filterAndSortObj.filter.priority">
-                    <option selected disabled hidden value="">Set Task Priority</option>
-                    <option :value="{priority:0}" >None</option>
-                    <option v-for="n in 5" :value="n">{{ n }}</option>
-                  </select>
-                </div>
-          
-                <a class="button" @click="runFilter()" :class="{'is-loading':taskLoading}">Filter</a>
-                <a class="button" @click="getAllTasks()">Clear</a>
+      <div class="filterBox">
+        <datepicker placeholder="Select date due" v-model="selectedDate"></datepicker>
+        <div class="dropdown" :class="{'is-active':dropdownButton}">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="dropdownButton = !dropdownButton">
+              <span>Order by</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item" v-for="sort in orderOptions" @click="sortBy(sort)">
+                {{sort.name}}
+              </a>
+            </div>
+          </div>
         </div>
-        <hr>
-        <div>
-                Search:
-                <input type="text" v-model="searchItem" placeholder="search tasks"></input>
-               
-                <label class="checkbox">
-                      <input type="checkbox" v-model="overdue"> Overdue
-                    </label>
+        Priority:
+        <div class="select">
+          <select v-model="filterAndSortObj.filter.priority">
+            <option selected disabled hidden value="">Set Task Priority</option>
+            <option :value="{priority:0}">None</option>
+            <option v-for="n in 5" :value="n">{{ n }}</option>
+          </select>
         </div>
-      
+
+        <a class="button" @click="runFilter()" :class="{'is-loading':taskLoading}">Filter</a>
+        <a class="button" @click="getAllTasks()">Clear</a>
+      </div>
+      <hr>
+      <div>
+        Search:
+        <input type="text" v-model="searchItem" placeholder="search tasks"></input>
+
+        <label class="checkbox">
+          <input type="checkbox" v-model="overdue"> Overdue
+        </label>
+      </div>
+
     </div>
     <div v-if="allTasks.length">
       <div class="container">
@@ -99,7 +99,7 @@
         </table>
       </div>
     </div>
-    </div>
+  </div>
 
 
 
@@ -120,7 +120,7 @@
         searchItem: '',
         dropdownButton: false,
         overdue: false,
-        taskLoading:false,
+        taskLoading: false,
         selectPriority: '',
         orderOptions: [{
             name: 'Descending Name',
@@ -190,12 +190,6 @@
       }
     },
     methods: {
-     
-      getAllTasks() {
-        this.$axios.get('/task').then(resp => {
-          this.searchModule(resp);
-        })
-      },
       searchModule(resp) {
         this.allTasks = resp.data.data.map(task => {
           if (this.$moment().diff(task.due_date) <= 0) {
@@ -204,18 +198,22 @@
           return task
         })
       },
+      getAllTasks() {
+        this.$axios.get('/task').then(resp => {
+          this.searchModule(resp);
+        })
+      },
       sortBy(option) {
         this.filterAndSortObj.sort = option.value
         this.dropdownButton = false;
       },
-
       runFilter() {
         if (this.selectedDate) {
           this.filterAndSortObj.filter.due_date = {
             $gt: this.selectedDate
           }
         }
-        this.taskLoading=true
+        this.taskLoading = true
         this.$axios.get('/task', {
           params: {
             filter: this.filterAndSortObj
@@ -224,18 +222,22 @@
           this.searchModule(resp);
           this.dropdownButton = false;
           this.selectedDate = '';
-          this.filterAndSortObj = {filter: {}}
-          this.taskLoading=false
-        }).catch((e)=>{
-            this.$modalResponse({
+          this.filterAndSortObj = {
+            filter: {}
+          }
+          this.taskLoading = false
+        }).catch((e) => {
+          this.$modalResponse({
             type: e.response.data.status,
             title: 'Oops...',
             text: e.response.data.message,
             footer: '<p>No Tasks With Those Criterias</p>',
           })
           this.selectedDate = '';
-          this.filterAndSortObj = {filter: {}}
-          this.taskLoading=false
+          this.filterAndSortObj = {
+            filter: {}
+          }
+          this.taskLoading = false
         })
       }
 
@@ -245,11 +247,10 @@
         return this.allTasks.filter(task => {
           if (task.name.toLowerCase().indexOf(this.searchItem.toLowerCase()) >= 0) {
             if (this.overdue == true) {
-              if (task.overdue == true) {
+              if (task.overdue == true && task.is_completed == false) {
                 return task;
               }
-            } 
-            else return task;
+            } else return task;
           }
         })
       }

@@ -22,7 +22,7 @@
     </div>
 
     <!--Add Task Modal -->
-    <div class="modal" :class="{'is-active':addTaskModal}">
+    <div class="modal" :class="{'is-active':createTaskModal}">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -62,7 +62,7 @@
         </section>
 
         <footer class="modal-card-foot">
-          <button class="button is-success" :class="{'is-loading':creatingTaskLoader}" @click="addTask()">Add Task</button>
+          <button class="button is-success" :class="{'is-loading':creatingTaskLoader}" @click="createTask()">Add Task</button>
           <button class="button" @click='closeTaskModal()'>Cancel</button>
         </footer>
       </div>
@@ -151,7 +151,7 @@
     data() {
       return {
         selectTaskModal: false,
-        addTaskModal: false,
+        createTaskModal: false,
         creatingTaskLoader: false,
         selectedProject: {},
         searchItem: '',
@@ -250,11 +250,11 @@
         })
       },
       openTaskModal(project) {
-        this.addTaskModal = true;
+        this.createTaskModal = true;
         this.newTask.project_id = project._id
       },
       closeTaskModal() {
-        this.addTaskModal = false;
+        this.createTaskModal = false;
         this.newTask = {
           name: '',
           description: '',
@@ -263,7 +263,7 @@
           project_id: ''
         }
       },
-      addTask() {
+      createTask() {
         this.creatingTaskLoader = !this.creatingTaskLoader;
         this.$axios.post('/task', this.newTask).then(resp => {
           if (resp.data.status == 'success') {
@@ -279,7 +279,7 @@
             type: e.response.data.status,
             title: 'Oops...',
             text: e.response.data.message,
-            footer: '<p>Task Name Has Been Taken</p>',
+            footer: '<p></p>',
           })
         })
       },

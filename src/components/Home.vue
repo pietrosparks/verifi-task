@@ -7,7 +7,7 @@
             <router-link to="/" class="button">Home</router-link>
           </a>
           <a class="navbar-item">
-            <a class="button" @click="openAddProject()">Create a project</a>
+            <a class="button" @click="opencreateProject()">Create a project</a>
           </a>
           <a class="navbar-item">
               <router-link to="/task" class="button">View All Tasks</router-link>
@@ -25,11 +25,10 @@
             <projectCard :project="project"></projectCard>
           </div>
         </div>
-
       </div>
     </div>
     <div>
-      <div class="modal" :class="{'is-active':addProjectModal}">
+      <div class="modal" :class="{'is-active':createProjectModal}">
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
@@ -51,7 +50,7 @@
           </section>
           <footer class="modal-card-foot">
             <button class="button is-success" :class="{'is-loading':createProjectLoading}" @click="createProject()">Create Project</button>
-            <button class="button" @click="addProjectModal = false">Cancel</button>
+            <button class="button" @click="createProjectModal = false">Cancel</button>
           </footer>
         </div>
 
@@ -71,15 +70,15 @@
     data() {
       return {
         newProject:{},
-        addProjectModal: false,
+        createProjectModal: false,
         createProjectLoading: false,
         existingProjects: null,
         selectedProject: null,
       }
     },
     methods: {
-      openAddProject() {
-        this.addProjectModal = !this.addProjectModal
+      opencreateProject() {
+        this.createProjectModal = !this.createProjectModal
       },
       createProject() {
         this.createProjectLoading = !this.createProjectLoading
@@ -87,7 +86,7 @@
 
           this.createProjectLoading = !this.createProjectLoading
           this.newProject = {}
-          this.openAddProject();
+          this.opencreateProject();
           this.$modalResponse(resp.data.status.toUpperCase(), resp.data.message, resp.data.status)
           this.getProjects()
           
@@ -96,16 +95,15 @@
             type: e.response.data.status,
             title: 'Oops...',
             text: e.response.data.message,
-            footer: '<p>Project Name Has Been Taken</p>',
+            footer: '<p></p>',
           })
           this.createProjectLoading = !this.createProjectLoading
-          this.openAddProject();
+          this.opencreateProject();
           this.getProjects()
 
         })
       },
       getProjects() {
-
         this.$axios.get('/project').then(resp => {
           console.log(resp);
           this.existingProjects = resp.data.data
