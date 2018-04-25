@@ -48,7 +48,7 @@ module.exports = (app, express) => {
   }))
   
   
-  app.use(serveStatic(__dirname + "/../dist"));
+  app.use('/',serveStatic(__dirname + "/../dist"));
   app.use(express.static(path.join(__dirname, 'public'))) 
   app.use('/api', api);
 
