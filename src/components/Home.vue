@@ -109,6 +109,13 @@
         this.$axios.get('/project').then(resp => {
           console.log(resp);
           this.existingProjects = resp.data.data
+        }).catch((e)=>{
+          this.$modalResponse({
+            type: e.response.data.status,
+            title: 'Oops...',
+            text: e.response.data.message,
+            footer: '<pNo Projects Created Yet</p>',
+          })
         })
       }
     },
