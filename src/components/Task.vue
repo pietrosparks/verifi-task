@@ -6,7 +6,7 @@
           <a class="navbar-item">
             <router-link to="/" class="button">Home</router-link>
           </a>
-          </a> 
+          </a>
 
         </div>
         <div class="navbar-item is-centered">
@@ -270,13 +270,7 @@
         subtasks: '',
         createSubTaskModal: false,
         taskLoading: false,
-        newSubtask: {
-          name: '',
-          description: '',
-          priority: '',
-          due_date: '',
-
-        },
+        newSubtask: {},
         editTaskModal: false,
         editSubTaskModal: false,
 
@@ -287,6 +281,8 @@
       getTask() {
         this.$axios.get(`/task/${this.$route.params.id}`).then(resp => {
           this.presentTask = resp.data.data
+        }).catch(e => {
+          return e;
         })
       },
       editTask() {
@@ -326,32 +322,26 @@
         this.$axios.get(`task/${this.$route.params.id}/subtask`).then(resp => {
           this.subtasks = resp.data.data
         }).catch(e => {
+          this.subtasks = ''
           this.$modalResponse({
             type: e.response.data.status,
             title: 'Oops...',
             text: e.response.data.message,
-            footer: '<p>No Subtasks/p>',
+            footer: '<p></p>',
           })
-            this.subtasks ='';
-            
+
         })
       },
-      createSubtask() {
+      createSubTask() {
         this.taskLoading = true
-        this.newSubtask.task_id = this.$route.params.id;
+        if (!this.$lodash.isEmpty(this.newSubtask)) this.newSubtask.task_id = this.$route.params.id;
         this.$axios.post('/subtask', this.newSubtask).then(resp => {
           this.taskLoading = false
           this.createSubTaskModal = false
           this.$modalResponse(resp.data.status, resp.data.message, resp.data.status)
           this.getSubTask();
-          this.newSubtask = {
-            name: '',
-            description: '',
-            priority: '',
-            due_date: '',
-
-          }
-        }).catch((e)=>{
+          this.newSubtask = {}
+        }).catch((e) => {
           this.taskLoading = false
           this.createSubTaskModal = false
           this.$modalResponse({
@@ -398,7 +388,7 @@
           cancelButtonColor: '#d33',
           confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
-         
+
           if (result.value) {
             this.$axios.delete(`/subtask/${subtask._id}`).then(resp => {
               this.$modalResponse(

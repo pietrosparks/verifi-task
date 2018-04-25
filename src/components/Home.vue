@@ -10,8 +10,8 @@
             <a class="button" @click="opencreateProject()">Create a project</a>
           </a>
           <a class="navbar-item">
-              <router-link to="/task" class="button">View All Tasks</router-link>
-            </a>
+            <router-link to="/task" class="button">View All Tasks</router-link>
+          </a>
         </div>
         <div class="navbar-item is-centered">
           <h1>Projects</h1>
@@ -69,7 +69,7 @@
     name: 'Home',
     data() {
       return {
-        newProject:{},
+        newProject: {},
         createProjectModal: false,
         createProjectLoading: false,
         existingProjects: null,
@@ -89,8 +89,8 @@
           this.opencreateProject();
           this.$modalResponse(resp.data.status.toUpperCase(), resp.data.message, resp.data.status)
           this.getProjects()
-          
-        }).catch((e)=>{
+
+        }).catch((e) => {
           this.$modalResponse({
             type: e.response.data.status,
             title: 'Oops...',
@@ -107,13 +107,8 @@
         this.$axios.get('/project').then(resp => {
           console.log(resp);
           this.existingProjects = resp.data.data
-        }).catch((e)=>{
-          this.$modalResponse({
-            type: e.response.data.status,
-            title: 'Oops...',
-            text: e.response.data.message,
-            footer: '<pNo Projects Created Yet</p>',
-          })
+        }).catch((e) => {
+          return e
         })
       }
     },

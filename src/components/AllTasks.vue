@@ -201,6 +201,13 @@
       getAllTasks() {
         this.$axios.get('/task').then(resp => {
           this.searchModule(resp);
+        }).catch(e=>{
+          this.$modalResponse({
+            type: e.response.data.status,
+            title: 'Oops...',
+            text: e.response.data.message,
+            footer: '<p>No Tasks Created Yet</p>',
+          })
         })
       },
       sortBy(option) {

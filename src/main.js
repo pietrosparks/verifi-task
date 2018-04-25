@@ -8,6 +8,7 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 import Datepicker from 'vuejs-datepicker';
 import 'buefy/lib/buefy.css';
+import lodash from 'lodash';
 
 
 
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV == 'production') {
 Vue.use(Buefy);
 Vue.use(require('vue-moment'));
 Vue.prototype.$axios = axios;
+Vue.prototype.$lodash = lodash
 Vue.prototype.$modalResponse = swal;
 Vue.config.productionTip = false
 

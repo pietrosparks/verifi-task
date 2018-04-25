@@ -1,12 +1,12 @@
 module.exports = (api, _, Task, Project, utils) => {
 
   api.post('/project', (req, res) => {
-    if(_.isEmpty(req.body)) return utils.jsonResponse(400, 'error', null, res, 'Fields are empty')
+    if (_.isEmpty(req.body)) return utils.jsonResponse(400, 'error', null, res, 'Fields are empty')
     req.checkBody('name', "Name field cannot be empty").notEmpty();
     req.checkBody('description', "Description field cannot be empty").notEmpty();
     req.getValidationResult()
       .then((result) => {
-          console.log(result.isEmpty(),"result")
+        console.log(result.isEmpty(), "result")
         if (!result.isEmpty()) {
           return utils.jsonResponse(400, 'error', null, res, 'Data Validation Failed', result.array())
         }
@@ -22,7 +22,7 @@ module.exports = (api, _, Task, Project, utils) => {
   api.get('/project', (req, res) => {
     Project.find({}).exec((err, projects) => {
       if (err) return utils.jsonResponse(500, 'error', null, res, 'There was an error', err);
-      if (!projects) return utils.jsonResponse(404, 'error', null, res, 'Projects not found', err);
+      if (!projects || _.isEmpty(projects)) return utils.jsonResponse(404, 'error', null, res, 'Projects have not been created', err);
       return utils.jsonResponse(200, 'success', projects, res, 'Projects Found');
     })
   })

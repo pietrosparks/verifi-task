@@ -9,6 +9,7 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
 
     req.getValidationResult()
       .then((result) => {
+          console.log(result.isEmpty())
         if (!result.isEmpty()) {
           return utils.jsonResponse(400, 'error', null.res, 'Data Validation Failed', result.array())
         }
@@ -56,7 +57,7 @@ module.exports = (api, _, Task, Project, utils, Subtask) => {
     Subtask.find({}).exec((err, subtasks) => {
 
       if (err) return utils.jsonResponse(500, 'error', null, res, 'Error occured while finding Subtasks', err);
-      if (!subtasks) return utils.jsonResponse(404, 'error', null, res, 'Subtasks not found', err);
+      if (!subtasks || _.isEmpty(subtasks)) return utils.jsonResponse(404, 'error', null, res, 'Subtasks have not been created', err);
       return utils.jsonResponse(200, 'success', subtasks, res, 'Subtasks Retrieved');
     })
   })
