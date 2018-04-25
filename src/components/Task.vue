@@ -326,6 +326,12 @@
         this.$axios.get(`task/${this.$route.params.id}/subtask`).then(resp => {
           this.subtasks = resp.data.data
         }).catch(e => {
+          this.$modalResponse({
+            type: e.response.data.status,
+            title: 'Oops...',
+            text: e.response.data.message,
+            footer: '<p>No Subtasks/p>',
+          })
             this.subtasks ='';
             
         })

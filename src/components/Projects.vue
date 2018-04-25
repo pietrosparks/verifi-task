@@ -291,6 +291,14 @@
         }).then(resp => {
           this.selectedProject.data = resp.data.data;
           this.dropdownButton = false;
+        }).catch(e=>{
+          this.$modalResponse({
+            type: e.response.data.status,
+            title: 'Oops...',
+            text: e.response.data.message,
+            footer: '<p>Error Sorting</p>',
+          })
+          this.dropdownButton = false;
         })
       }
     },
