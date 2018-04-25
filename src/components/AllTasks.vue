@@ -7,9 +7,6 @@
             <router-link to="/" class="button">Home</router-link>
           </a>
 
-          <a class="navbar-item">
-            <a class="button" @click="openAddProject()">Create a project</a>
-          </a>
 
         </div>
         <div class="navbar-item is-centered">
